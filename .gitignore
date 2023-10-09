@@ -1,2 +1,2 @@
 # ignore the discord bot token file
-.env
+discordbot/.env
