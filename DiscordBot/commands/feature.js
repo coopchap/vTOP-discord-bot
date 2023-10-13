@@ -18,8 +18,8 @@ set_cptable(cptable);
 
 
 export function addTrackedFeature(interaction) {
-    var data = XLSX.read(workbook, opts);
-    var cell = {c:0, r:0}
-    XLSX.utils.sheet_add_aoa(worksheet, ["hello"], { origin: cell });
-    console.log(cell.v);
+    const workbook = xlsx.readFile('../../tracking/book.xlsx')
+    let worksheet = workbook.Sheets['Sheet1'];
+    let cell = worksheet['A1'].v;
+    console.log('Cell data', cell)
 }
