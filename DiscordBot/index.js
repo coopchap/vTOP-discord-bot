@@ -12,7 +12,7 @@ const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
 });
 
-import { addTrackedFeature } from './feature.js';
+import { addTrackedFeature } from './commands/feature.js';
 
 
 client.on(Events.ClientReady, (x) => {
