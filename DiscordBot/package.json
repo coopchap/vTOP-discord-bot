@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Discord bot for the vCGP server. The main purpose is to maintain feature and bug tracking",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.13.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "xlsx": "^0.18.5"
   }
 }
