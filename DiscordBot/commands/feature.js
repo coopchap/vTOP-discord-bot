@@ -1,8 +1,7 @@
 import {
     Client,
     Events,
-    GatewayIntentBits,
-    SlashCommandBuilder,
+    GatewayIntentBits
 } from 'discord.js';
 
 const client = new Client({

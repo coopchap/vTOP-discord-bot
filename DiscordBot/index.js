@@ -27,7 +27,7 @@ client.on(Events.ClientReady, (x) => {
 
 client.on('interactionCreate', (interaction) => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.commandName === 'feature') {
+    if (interaction.commandName === 'feature' && member.roles.cache.some(role => role.name === 'Mod')) {
         addTrackedFeature(interaction);
     }
 });
