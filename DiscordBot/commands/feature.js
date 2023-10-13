@@ -20,6 +20,6 @@ set_cptable(cptable);
 export function addTrackedFeature(interaction) {
     const workbook = xlsx.readFile('../../tracking/book.xlsx')
     let worksheet = workbook.Sheets['Sheet1'];
-    let cell = worksheet['A1'].v;
-    console.log('Cell data', cell)
+    let cellData = worksheet['A1'].v;
+    interaction.reply(cellData);
 }
