@@ -41,7 +41,11 @@ client.on(Events.ClientReady, (x) => {
         .addStringOption(option =>
             option
             .setName('attachements')
-            .setDescription('Links to relevant attachements'));
+            .setDescription('Links to relevant attachements'))
+        .addUserOption(option =>
+            option
+                .setName('reporter')
+                .setDescription('Who submitted the report'));
 
     const improvement = new SlashCommandBuilder()
         .setName('improvement')

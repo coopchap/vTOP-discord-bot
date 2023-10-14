@@ -68,12 +68,13 @@ function addBugToExcel(interaction) {
 }
 
 function renameThread(interaction) {
-    const channelId = interaction.channelId;
-    const thread = client.channels.cache.get(channelId);
+    const channelID = interaction.channelId;
+    const thread = client.channels.cache.get(channelID);
     let threadName = thread.name;
-    thread.name = '[vCGP-B' + bugID + ']' + threadName;
+    thread.name = '[vCGP-B' + bugID + '] ' + threadName;
 }
 
 function reply(interaction, bugID) {
-    interaction.reply('')
+    const reporter = interaction.getUser('reporter');
+    interaction.reply('@' + reporter.username + ', your feature request is now being tracked. vCGP Admins will discuss if this feature should implemented. If a consensus is reached, I\'ll notify you in this thread.')
 }
