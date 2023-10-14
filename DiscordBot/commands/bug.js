@@ -86,11 +86,11 @@ function addBugToExcel(interaction, bugID, viewBugID) {
     updateCell(17, "-");
 }
 
-function renameThread(interaction) {
+function renameThread(interaction, viewBugID) {
     const channelID = interaction.channelId;
     const thread = client.channels.cache.get(channelID);
     let threadName = thread.name;
-    thread.name = '[vCGP-B' + bugID + '] ' + threadName;
+    thread.name = '[vCGP-B' + viewBugID + '] ' + threadName;
 }
 
 function reply(interaction, bugID) {
