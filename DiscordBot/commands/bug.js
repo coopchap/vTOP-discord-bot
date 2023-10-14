@@ -7,35 +7,36 @@ const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
 });
 
-import { read, writeFileXLSX } from "xlsx";
-
 export function addTrackedBug(interaction) {
-    const bugID = getNextBugID(interaction);
-    addBugToExcel(interaction, bugID);
-    renameThread(interaction, bugID);
-    reply(interaction, bugID);
+    const bugIDs = getNextBugID(interaction);
+    const viewBugID = bugIDs[0];
+    const bugID = bugIDs[1]
+    addBugToExcel(interaction, bugID, viewBugID);
+    renameThread(interaction, viewBugID);
+    reply(interaction, viewBugID);
 }
 
 function getNextBugID(interaction) {
 
-        let latestIDJson = require('../../tracking/latestID.json');
-        const parsedJSON = JSON.parse(latestIDJson);
-        const latestBugID = parsedJSON.bugID;
+        let lastIDJson = require('../../tracking/lastID.json');
+        const parsedJSON = JSON.parse(lastIDJson);
+        const lastBugID = parsedJSON.bugID;
+        let currentBugID = lastBugID++;
 
-        const IDLength = latestBugID.toString().length;
+        const IDLength = lastBugID.toString().length;
         let viewBugID;
     try {
         switch (IDLength) {
             case 1:
-                viewBugID = "00" + latestBugID;
+                viewBugID = "00" + currentBugID;
                 break;
 
             case 2:
-                viewBugID = "0" + latestBugID;
+                viewBugID = "0" + currentBugID;
                 break;
 
             case 3:
-                viewBugID = latestBugID;
+                viewBugID = currentBugID;
                 break;
 
             default:
@@ -46,25 +47,33 @@ function getNextBugID(interaction) {
         console.error(error);
     }
 
-    parsedJSON.bugID = bugID++;
+    parsedJSON.bugID = currentBugID;
 
     if (bugID >= 900) {
         interaction.reply({ content: 'Warning: \'latestBugID\' is approaching 1000, consider updating code to accomadate for IDs greater than 1000', ephemeral: true });
         console.warn('Warning: \'latestBugID\' is approaching 1000, consider updating code to accomadate for IDs greater than 1000');
     }
 
-    return viewBugID;
+    const returnValues = [viewBugID, currentBugID];
+    return returnValues;
 }
 
 
-function addBugToExcel(interaction) {
-    const workbook = xlsx.readFile('../../tracking/book.xlsx')
+function addBugToExcel(interaction, bugID) {
+    var XLSX = require("xlsx");
+    const workbook = XLSX.readFile('../../tracking/book.xlsx')
     let worksheet = workbook.Sheets['Sheet1'];
-    // let cellData = worksheet['A1'].v;
-    // interaction.reply(cellData);
+
+    const rowNumber = bugID
+    worksheet[XLSX.utils.encode_cell({r: })]
+
+    /*
     const channelId = interaction.channelId;
     const thread = client.channels.cache.get(channelId);
     const bugName = thread.name;
+
+    const bugDescription = interaction.getString('description');
+    const bugAttachments = interaction.getString('attachements'); */
 }
 
 function renameThread(interaction) {
