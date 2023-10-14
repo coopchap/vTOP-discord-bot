@@ -59,21 +59,31 @@ function getNextBugID(interaction) {
 }
 
 
-function addBugToExcel(interaction, bugID) {
+function addBugToExcel(interaction, bugID, viewBugID) {
     var XLSX = require("xlsx");
     const workbook = XLSX.readFile('../../tracking/book.xlsx')
     let worksheet = workbook.Sheets['Sheet1'];
-
-    const rowNumber = bugID
-    worksheet[XLSX.utils.encode_cell({r: })]
-
-    /*
+    
     const channelId = interaction.channelId;
     const thread = client.channels.cache.get(channelId);
     const bugName = thread.name;
-
     const bugDescription = interaction.getString('description');
-    const bugAttachments = interaction.getString('attachements'); */
+    const bugAttachments = interaction.getString('attachements');
+    const bugCreationDate = interaction.createdAt;
+
+    const rowNumber = bugID + 3;
+    function updateCell(column, text) {
+        worksheet[XLSX.utils.encode_cell({r: rowNumber, c: column})].v = text;
+    }
+
+    updateCell(10, viewBugID);
+    updateCell(11, bugName);
+    updateCell(12, bugDescription);
+    updateCell(13, bugAttachments);
+    updateCell(14, bugCreationDate);
+    updateCell(15, "Reviewing");
+    updateCell(16, "-");
+    updateCell(17, "-");
 }
 
 function renameThread(interaction) {
