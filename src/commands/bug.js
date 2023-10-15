@@ -1,21 +1,21 @@
 import {
     Client,
-    GatewayIntentBits
+    GatewayIntentBits,
+    userMention
 } from 'discord.js';
 
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
 });
 
-export function addTrackedBug(interaction) {
-    const bugIDs = getNextBugID(interaction); //gets id for this bug and formatted veresion
-    const viewBugID = bugIDs[0]; //seperates getNextBugID into seperate variables
-    const bugID = bugIDs[1]
-    console.log('we made it this far');
-    reply(interaction, viewBugID); //provides message in thread
-    renameThread(interaction, viewBugID); //renames thread with id
-    addBugToExcel(interaction, bugID, viewBugID); //adds bug to .xlsx
-    console.log('now we are here');
+export function addTrackedBug(interaction, client) {
+    const bugID = getNextBugID(interaction); //gets current bug id, ex: '1'
+    const viewBugID = formatBugID(bugID, interaction)[0]; //ex: 'vCGP-001'
+    const excelBugID = formatBugID(bugID, interaction)[1]; //ex: '001'
+    reply(interaction, viewBugID, client); //provides message in thread
+    // renameThread(interaction, viewBugID); //renames thread with id
+    addBugToExcel(interaction, bugID, excelBugID); //adds bug to .xlsx
+    console.log(excelBugID);
 }
 
 function getNextBugID(interaction) {
@@ -23,7 +23,6 @@ function getNextBugID(interaction) {
     /* const fs = require('fs');  -- Commented out since this isn't valid to be run in browser
 
     let currentBugID;
-    
     fs.promises.readFile('../../tracking/lastID.json', 'utf8')
       .then(data => {
         const jsonData = JSON.parse(data);
@@ -31,46 +30,50 @@ function getNextBugID(interaction) {
         currentBugID = lastBugID + 1;
       })
       .catch(error => {
-        console.error('Error:', error);
+        console.error('Error: unable to read lastID.json', error);
       });
-
-        const IDLength = currentBugID.toString().length;
-        let viewBugID;
-    try {
-        switch (IDLength) { //adds appropriate number of 0s to get three digit number
-            case 1:
-                viewBugID = "00" + currentBugID;
-                break;
-
-            case 2:
-                viewBugID = "0" + currentBugID;
-                break;
-
-            case 3:
-                viewBugID = currentBugID;
-                break;
-
-            default:
-                interaction.reply({ content: 'There was an error tracking the bug report: \'latestBugID\' was too long or not valid', ephemeral: true });
-                throw new Error('\'latestBugID\' was too long or not valid');
-        }
-    } catch (error) {
-        console.error(error);
-    } 
 
     if (currentBugID >= 900) { //warns if close to 1000 (4 digit ids not supported)
         interaction.reply({ content: 'Warning: \'latestBugID\' is approaching 1000, consider updating code to accomadate for IDs greater than 1000', ephemeral: true });
         console.warn('Warning: \'latestBugID\' is approaching 1000, consider updating code to accomadate for IDs greater than 1000');
     } 
 
-    const returnValues = [viewBugID, currentBugID];  */
-    const returnValues = ["001", 1]
-    return returnValues; //returns formatted and non-formatted id
+    return currentBugID;
+    */
+    return 65; //temporary
+}
+
+function formatBugID(bugID, interaction) {
+    const IDLength = bugID.toString().length;
+    let threeDigitBugID;
+    try {
+        switch (IDLength) { //adds appropriate number of 0s to get three digit number
+            case 1:
+                threeDigitBugID = "00" + bugID;
+                break;
+
+            case 2:
+                threeDigitBugID = "0" + bugID;
+                break;
+
+            case 3:
+                threeDigitBugID = bugID;
+                break;
+
+            default:
+                throw new Error('\'bugID\' was too long or not valid');
+        }
+    const viewBugID = 'vCGP-B' + threeDigitBugID;
+    return [viewBugID, threeDigitBugID];
+
+    } catch (error) {
+        console.error(error);
+    } 
 }
 
 
 function addBugToExcel(interaction, bugID, viewBugID) {
-    var XLSX = require("xlsx");   //load .xlsx sheet vvvv
+    /* var XLSX = require("xlsx");   //load .xlsx sheet vvvv
     const workbook = XLSX.readFile('../../tracking/book.xlsx')
     let worksheet = workbook.Sheets['Sheet1'];  
     
@@ -93,7 +96,7 @@ function addBugToExcel(interaction, bugID, viewBugID) {
     updateCell(14, bugCreationDate);
     updateCell(15, "Reviewing");
     updateCell(16, "-");
-    updateCell(17, "-");
+    updateCell(17, "-"); */
 }
 
 function renameThread(interaction, viewBugID) {
@@ -101,10 +104,13 @@ function renameThread(interaction, viewBugID) {
     const channelID = interaction.channelId;  //gets thread name vvvv
     const thread = client.channels.cache.get(channelID);
     let threadName = thread.name;
-    thread.name = '[vCGP-B' + viewBugID + '] ' + threadName; //updates name
+    thread.name = '[' + viewBugID + '] ' + threadName; //updates name
 }
 
-function reply(interaction, bugID) { //adds message about feature now being tracked
-    console.log('replied');
-    interaction.reply('@, your feature request is now being tracked. vCGP Admins will discuss if this feature should implemented. If a consensus is reached, I\'ll notify you in this thread.')
+async function reply(interaction, viewBugID, client) { //adds message about feature now being tracked
+    const reporter = interaction.options.getUser('reporter'); //get user selected when cmommand sent
+    await interaction.reply('<@' + reporter + '>, your bug report is now being tracked! A ticket is has been filed. You will be notified in this thread if the issue is resolved.');
+    const channelID = interaction.channelId;  //gets additional message vvvv
+    const channel = client.channels.cache.get(channelID);
+    channel.send('Your ticked number is: **' + viewBugID + '**');
 }
