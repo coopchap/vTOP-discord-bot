@@ -38,6 +38,11 @@ client.on(Events.ClientReady, (x) => {
                 .setRequired(true))
         .addStringOption(option =>
             option
+                .setName('date')
+                .setDescription('Today\'s date')
+                .setRequired(true))
+        .addStringOption(option =>
+            option
             .setName('attachements')
             .setDescription('Links to relevant attachements'));
 
