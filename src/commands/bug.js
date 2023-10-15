@@ -11,19 +11,30 @@ export function addTrackedBug(interaction) {
     const bugIDs = getNextBugID(interaction); //gets id for this bug and formatted veresion
     const viewBugID = bugIDs[0]; //seperates getNextBugID into seperate variables
     const bugID = bugIDs[1]
+    console.log('we made it this far');
     reply(interaction, viewBugID); //provides message in thread
     renameThread(interaction, viewBugID); //renames thread with id
     addBugToExcel(interaction, bugID, viewBugID); //adds bug to .xlsx
+    console.log('now we are here');
 }
 
 function getNextBugID(interaction) {
 
-        let lastIDJson = require('../../tracking/lastID.json'); //gets last used id
-        const parsedJSON = JSON.parse(lastIDJson);
-        const lastBugID = parsedJSON.bugID;
-        let currentBugID = lastBugID++; //updates json with new lateset id
+    /* const fs = require('fs');  -- Commented out since this isn't valid to be run in browser
 
-        const IDLength = lastBugID.toString().length;
+    let currentBugID;
+    
+    fs.promises.readFile('../../tracking/lastID.json', 'utf8')
+      .then(data => {
+        const jsonData = JSON.parse(data);
+        const lastBugID = jsonData.bugID;
+        currentBugID = lastBugID + 1;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+        const IDLength = currentBugID.toString().length;
         let viewBugID;
     try {
         switch (IDLength) { //adds appropriate number of 0s to get three digit number
@@ -45,16 +56,15 @@ function getNextBugID(interaction) {
         }
     } catch (error) {
         console.error(error);
-    }
+    } 
 
-    parsedJSON.bugID = currentBugID;
-
-    if (bugID >= 900) { //warns if close to 1000 (4 digit ids not supported)
+    if (currentBugID >= 900) { //warns if close to 1000 (4 digit ids not supported)
         interaction.reply({ content: 'Warning: \'latestBugID\' is approaching 1000, consider updating code to accomadate for IDs greater than 1000', ephemeral: true });
         console.warn('Warning: \'latestBugID\' is approaching 1000, consider updating code to accomadate for IDs greater than 1000');
-    }
+    } 
 
-    const returnValues = [viewBugID, currentBugID]; 
+    const returnValues = [viewBugID, currentBugID];  */
+    const returnValues = ["001", 1]
     return returnValues; //returns formatted and non-formatted id
 }
 
@@ -87,6 +97,7 @@ function addBugToExcel(interaction, bugID, viewBugID) {
 }
 
 function renameThread(interaction, viewBugID) {
+    console.log('renamed');
     const channelID = interaction.channelId;  //gets thread name vvvv
     const thread = client.channels.cache.get(channelID);
     let threadName = thread.name;
@@ -94,6 +105,6 @@ function renameThread(interaction, viewBugID) {
 }
 
 function reply(interaction, bugID) { //adds message about feature now being tracked
-    const reporter = interaction.getUser('reporter');
-    interaction.reply('@' + reporter.username + ', your feature request is now being tracked. vCGP Admins will discuss if this feature should implemented. If a consensus is reached, I\'ll notify you in this thread.')
+    console.log('replied');
+    interaction.reply('@, your feature request is now being tracked. vCGP Admins will discuss if this feature should implemented. If a consensus is reached, I\'ll notify you in this thread.')
 }

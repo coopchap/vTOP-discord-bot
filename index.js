@@ -46,6 +46,9 @@ client.on(Events.ClientReady, (x) => {
 
 client.on('interactionCreate', (interaction) => {
     if (!interaction.isChatInputCommand()) return;
+
+    const member = interaction.member;
+    
     if (interaction.commandName === 'feature' && member.roles.cache.some(role => role.name === 'Developer')) {
         addTrackedFeature(interaction);
     }
