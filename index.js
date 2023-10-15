@@ -26,18 +26,20 @@ client.on(Events.ClientReady, (x) => {
     const bug = new SlashCommandBuilder()
         .setName('bug')
         .setDescription('This creates a trackable bug report and renames the thread\'s title')
-       /* .addStringOption(option =>
+        .addStringOption(option =>
             option
                 .setName('description')
-                .setDescription('The description of the bug report'))
+                .setDescription('The description of the bug report')
+                .setRequired(true))
+        .addUserOption(option =>
+            option
+                .setName('reporter')
+                .setDescription('Who submitted the report')
+                .setRequired(true))
         .addStringOption(option =>
             option
             .setName('attachements')
-            .setDescription('Links to relevant attachements'))
-        .addStringOption(option =>
-            option
-                .setName('reporter')
-                .setDescription('Who submitted the report')); */
+            .setDescription('Links to relevant attachements'));
 
    
     client.application.commands.create(bug);
@@ -50,27 +52,27 @@ client.on('interactionCreate', (interaction) => {
     const member = interaction.member;
     
     if (interaction.commandName === 'feature' && member.roles.cache.some(role => role.name === 'Developer')) {
-        addTrackedFeature(interaction);
+        addTrackedFeature(interaction, client);
     }
 
     if (interaction.commandName === 'bug' && member.roles.cache.some(role => role.name === 'Developer')) {
-        addTrackedBug(interaction);
+        addTrackedBug(interaction, client);
     }
 
     if (interaction.commandName === 'improvement' && member.roles.cache.some(role => role.name === 'Developer')) {
-        addTrackedImprovement(interaction);
+        addTrackedImprovement(interaction, client);
     }
 
     if (interaction.commandName === 'declined' && member.roles.cache.some(role => role.name === 'Admin')) {
-        declinedRequestReport(interaction);
+        declinedRequestReport(interaction, client);
     }
 
     if (interaction.commandName === 'approved' && member.roles.cache.some(role => role.name === 'Admin')) {
-        approvedRequestReport(interaction);
+        approvedRequestReport(interaction, client);
     }
 
     if (interaction.commandName === 'finished' && member.roles.cache.some(role => role.name === 'Developer')) {
-        finishedRequestReport(interaction);
+        finishedRequestReport(interaction, client);
     }
 });
 
