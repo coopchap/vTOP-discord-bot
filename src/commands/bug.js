@@ -1,7 +1,6 @@
 import {
     Client,
-    GatewayIntentBits,
-    GuildExplicitContentFilter
+    GatewayIntentBits
 } from 'discord.js';
 
 const client = new Client({
