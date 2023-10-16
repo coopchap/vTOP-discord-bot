@@ -105,8 +105,6 @@ function renameThread(interaction, viewBugID) {
     const newThreadName = "[" + viewBugID + "] " + forumPostName; 
 
     forumPost.setName(newThreadName);
-    
-    forumPost.edit({name: newThreadName});
 }
 
 async function reply(interaction, viewBugID, client) { //adds message about feature now being tracked
