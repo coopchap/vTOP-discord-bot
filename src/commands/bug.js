@@ -106,7 +106,7 @@ function renameThread(interaction, viewBugID) {
 
     forumPost.setName(newThreadName);
 
-    return newThreadName;
+    return forumPostName;
 }
 
 async function reply(interaction, viewBugID, client) { //adds message about feature now being tracked
