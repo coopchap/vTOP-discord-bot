@@ -1,12 +1,6 @@
 import {
-    Client,
-    GatewayIntentBits,
     GuildForumThreadManager
 } from 'discord.js';
-
-const client = new Client({
-    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
-});
 
 export async function addTrackedBug(interaction) {
     try {
