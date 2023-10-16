@@ -38,11 +38,6 @@ client.on(Events.ClientReady, (x) => {
                 .setRequired(true))
         .addStringOption(option =>
             option
-                .setName('date')
-                .setDescription('Today\'s date')
-                .setRequired(true))
-        .addStringOption(option =>
-            option
             .setName('attachements')
             .setDescription('Links to relevant attachements'));
 
@@ -57,7 +52,7 @@ client.on('interactionCreate', (interaction) => {
     const member = interaction.member;
     
     if (interaction.commandName === 'feature' && member.roles.cache.some(role => role.name === 'Developer')) {
-        addTrackedFeature(interaction);
+        addTrackedFeature(interaction), client;
     }
 
     if (interaction.commandName === 'bug' && member.roles.cache.some(role => role.name === 'Developer')) {
