@@ -57,7 +57,7 @@ client.on('interactionCreate', (interaction) => {
     const member = interaction.member;
     
     if (interaction.commandName === 'feature' && member.roles.cache.some(role => role.name === 'Developer')) {
-        addTrackedFeature(interaction, client);
+        addTrackedFeature(interaction);
     }
 
     if (interaction.commandName === 'bug' && member.roles.cache.some(role => role.name === 'Developer')) {
