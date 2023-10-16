@@ -17,7 +17,7 @@ import { addTrackedBug } from './src/commands/bug.js';
 // import { addTrackedImprovement } from './src/commands/improvement.js';
 import { approvedRequestReport } from './src/commands/approved.js';
 import { declinedRequestReport } from './src/commands/declined.js';
-import { finishedRequestReport } from './src/commands/completed.js';
+import { completedRequestReport } from './src/commands/completed.js';
 
 
 client.on(Events.ClientReady, (x) => {
@@ -52,7 +52,7 @@ client.on('interactionCreate', (interaction) => {
     const member = interaction.member;
     
     if (interaction.commandName === 'feature' && member.roles.cache.some(role => role.name === 'Developer')) {
-        addTrackedFeature(interaction), client;
+        addTrackedFeature(interaction, client);
     }
 
     if (interaction.commandName === 'bug' && member.roles.cache.some(role => role.name === 'Developer')) {
@@ -71,8 +71,8 @@ client.on('interactionCreate', (interaction) => {
         approvedRequestReport(interaction, client);
     }
 
-    if (interaction.commandName === 'finished' && member.roles.cache.some(role => role.name === 'Developer')) {
-        finishedRequestReport(interaction, client);
+    if (interaction.commandName === 'completed' && member.roles.cache.some(role => role.name === 'Developer')) {
+        completedRequestReport(interaction, client);
     }
 });
 
