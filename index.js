@@ -15,9 +15,9 @@ const client = new Client({
 // import { addTrackedFeature } from './src/commands/feature.js';
 import { addTrackedBug } from './src/commands/bug.js';
 // import { addTrackedImprovement } from './src/commands/improvement.js';
-import { approvedRequestReport } from './src/commands/approved.js';
-import { declinedRequestReport } from './src/commands/declined.js';
-import { completedRequestReport } from './src/commands/completed.js';
+import { approveRequestReport } from './src/commands/approve.js';
+//import { declinedRequestReport } from './src/commands/declined.js';
+//import { completedRequestReport } from './src/commands/completed.js';
 
 
 client.on(Events.ClientReady, (x) => {
@@ -41,8 +41,17 @@ client.on(Events.ClientReady, (x) => {
             .setName('attachments')
             .setDescription('Links to relevant attachments, seperate with spaces'));
 
+    const approve = new SlashCommandBuilder()
+        .setName('approve')
+        .setDescription('This approves a feature or imporvement request (Use /verified for bug reports)')
+        .addUserOption(option =>
+            option
+                .setName('requester')
+                .setDescription('Who originally submitted the request')
+                .setRequired(true))
    
     client.application.commands.create(bug);
+    client.application.commands.create(approve);
 
 });
 
@@ -67,8 +76,8 @@ client.on('interactionCreate', (interaction) => {
         declinedRequestReport(interaction, client);
     }
 
-    if (interaction.commandName === 'approved' && member.roles.cache.some(role => role.name === 'Admin')) {
-        approvedRequestReport(interaction, client);
+    if (interaction.commandName === 'approve' && member.roles.cache.some(role => role.name === 'Admin')) {
+        approveRequestReport(interaction, client);
     }
 
     if (interaction.commandName === 'completed' && member.roles.cache.some(role => role.name === 'Developer')) {
