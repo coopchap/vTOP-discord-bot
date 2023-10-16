@@ -14,10 +14,10 @@ const client = new Client({
 
 // import { addTrackedFeature } from './src/commands/feature.js';
 import { addTrackedBug } from './src/commands/bug.js';
-/* import { addTrackedImprovement } from './src/commands/improvement.js';
+// import { addTrackedImprovement } from './src/commands/improvement.js';
 import { approvedRequestReport } from './src/commands/approved.js';
 import { declinedRequestReport } from './src/commands/declined.js';
-import { finishedRequestReport } from './src/commands/finished.js'; */
+import { finishedRequestReport } from './src/commands/completed.js';
 
 
 client.on(Events.ClientReady, (x) => {
