@@ -18,7 +18,8 @@ export async function addTrackedBug(interaction) {
         const threadNames = await getNewThreadName(interaction, viewBugID);
         const newThreadName = threadNames[0];
         const bugTitle = threadNames[1];
-        await reply(interaction, viewBugID, bugTitle);
+        const attachementsNumber = await getNumberAttachments(interaction);
+        await reply(interaction, viewBugID, bugTitle, attachementsNumber);
         renameThread(interaction, newThreadName);
         createNewForumPost(interaction);
     } catch (error) {
@@ -119,18 +120,34 @@ function renameThread(interaction, newThreadName) {
     forumPost.setName(newThreadName);
 }
 
-async function reply(interaction, viewBugID, bugTitle) { //adds message about feature now being tracked
+async function reply(interaction, viewBugID, bugTitle, attachementsNumber) { //adds message about feature now being tracked
     const reporter = interaction.options.getUser('reporter'); //get user selected when cmommand sent
     interaction.reply(`${reporter}, your bug report is now being tracked! A ticket is has been filed. You will be notified in this thread if the issue is resolved.\nYour ticket number is: **${viewBugID}**`);
 
     const bugDescription = interaction.options.getString('description');
-    const attatchmentsNumber = 0;
     const bugCreationStamp = interaction.createdTimestamp;
     const correctedStamp = bugCreationStamp.toString().slice(0, 10);
     const bugCreationDate = `<t:${correctedStamp}:d>`;
 
 
-    // commented so i dont get spammed     interaction.user.send(`You have created a new bug ticket in the vCGP server.\nID: \`${viewBugID}\`.\nTitle: \`${bugTitle}\`.\nDescription: \`${bugDescription}\`.\nAttatchments: \`${attatchmentsNumber}\`.\nCreated: ${bugCreationDate}\n\nIf this was a mistake, contact an admin`);
+    interaction.user.send(`You have created a new bug ticket in the vCGP server.\nID: \`${viewBugID}\`.\nTitle: \`${bugTitle}\`.\nDescription: \`${bugDescription}\`.\nAttatchments: \`${attachementsNumber}\`.\nCreated: ${bugCreationDate}\n\nIf this was a mistake, contact an admin`);
+}
+
+function getNumberAttachments(interaction) {
+    try {
+        const userInput = interaction.options.getString('attachments');
+        if (userInput) {
+            const attachements = userInput.split(' ');
+            const attachementsNumber = attachements.length;
+        
+            return attachementsNumber;
+        } else {
+            return 0;
+        }
+    } catch (error) {
+        console.log(error);
+        return "error";
+    }
 }
 
 

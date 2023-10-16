@@ -38,8 +38,8 @@ client.on(Events.ClientReady, (x) => {
                 .setRequired(true))
         .addStringOption(option =>
             option
-            .setName('attachements')
-            .setDescription('Links to relevant attachements'));
+            .setName('attachments')
+            .setDescription('Links to relevant attachments, seperate with spaces'));
 
    
     client.application.commands.create(bug);
