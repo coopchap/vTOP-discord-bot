@@ -1,6 +1,7 @@
 import {
     Client,
-    GatewayIntentBits
+    GatewayIntentBits,
+    GuildForumThreadManager
 } from 'discord.js';
 
 const client = new Client({
@@ -8,19 +9,24 @@ const client = new Client({
 });
 
 export async function addTrackedBug(interaction) {
-    const bugID = getNextBugID(interaction); //gets current bug id, ex: '1'
-    const viewBugID = formatBugID(bugID, interaction)[0]; //ex: 'vCGP-B001'
-    const excelBugID = formatBugID(bugID, interaction)[1]; //ex: '001'
+    try {
+        const bugID = await getNextBugID();
+        const viewBugID = formatBugID(bugID)[0];
+        const excelBugID = formatBugID(bugID)[1];
 
-    await addBugToExcel(interaction, bugID, excelBugID); //adds bug to .xlsx 
-    const threadNames = await getNewThreadName(interaction, viewBugID);
-    const newThreadName = threadNames[0];
-    const bugTitle = threadNames[1];
-    await reply(interaction, viewBugID, bugTitle, client) //provides message in thread
-    renameThread(interaction, newThreadName); //renames thread with id, gets threadaa title`
+        await addBugToExcel(interaction, bugID, excelBugID);
+        const threadNames = await getNewThreadName(interaction, viewBugID);
+        const newThreadName = threadNames[0];
+        const bugTitle = threadNames[1];
+        await reply(interaction, viewBugID, bugTitle);
+        renameThread(interaction, newThreadName);
+        createNewForumPost(interaction);
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }
 
-function getNextBugID(interaction) {
+function getNextBugID() {
 
     /* const fs = require('fs'); 
 
@@ -45,7 +51,7 @@ function getNextBugID(interaction) {
     return 68; //temporary, cant be run in browser
 }
 
-function formatBugID(bugID, interaction) {
+function formatBugID(bugID) {
     const IDLength = bugID.toString().length;
     let threeDigitBugID;
     try {
@@ -113,7 +119,7 @@ function renameThread(interaction, newThreadName) {
     forumPost.setName(newThreadName);
 }
 
-async function reply(interaction, viewBugID, bugTitle, client) { //adds message about feature now being tracked
+async function reply(interaction, viewBugID, bugTitle) { //adds message about feature now being tracked
     const reporter = interaction.options.getUser('reporter'); //get user selected when cmommand sent
     interaction.reply(`${reporter}, your bug report is now being tracked! A ticket is has been filed. You will be notified in this thread if the issue is resolved.\nYour ticket number is: **${viewBugID}**`);
 
@@ -121,9 +127,22 @@ async function reply(interaction, viewBugID, bugTitle, client) { //adds message 
     const attatchmentsNumber = 0;
     const bugCreationStamp = interaction.createdTimestamp;
     const correctedStamp = bugCreationStamp.toString().slice(0, 10);
-    console.log(correctedStamp);
     const bugCreationDate = `<t:${correctedStamp}:d>`;
 
 
-    interaction.user.send(`You have created a new bug ticket in the vCGP server.\nID: \`${viewBugID}\`.\nTitle: \`${bugTitle}\`.\nDescription: \`${bugDescription}\`.\nAttatchments: \`${attatchmentsNumber}\`.\nCreated: ${bugCreationDate}\n\nIf this was a mistake, contact an admin`);
+    // commented so i dont get spammed     interaction.user.send(`You have created a new bug ticket in the vCGP server.\nID: \`${viewBugID}\`.\nTitle: \`${bugTitle}\`.\nDescription: \`${bugDescription}\`.\nAttatchments: \`${attatchmentsNumber}\`.\nCreated: ${bugCreationDate}\n\nIf this was a mistake, contact an admin`);
+}
+
+
+
+function createNewForumPost(interaction) {
+    const channel = interaction.channel;
+    const forum = channel.parent;
+    const threadManager = new GuildForumThreadManager(forum);
+    threadManager.create({ //creates new post so I can easily keep testing
+        name: 'Bug title',
+        message: {
+        content: 'bug description',
+        },
+    })
 }
