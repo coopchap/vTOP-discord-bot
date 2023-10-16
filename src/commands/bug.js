@@ -1,7 +1,7 @@
 import {
     Client,
     GatewayIntentBits,
-    time
+    GuildForumThreadManager
 } from 'discord.js';
 
 const client = new Client({
@@ -14,14 +14,14 @@ export function addTrackedBug(interaction, client) {
     const excelBugID = formatBugID(bugID, interaction)[1]; //ex: '001'
 
     reply(interaction, viewBugID, client); //provides message in thread
-    // renameThread(interaction, viewBugID); //renames thread with id
+    renameThread(interaction, viewBugID); //renames thread with id
     addBugToExcel(interaction, bugID, excelBugID); //adds bug to .xlsx
     
 }
 
 function getNextBugID(interaction) {
 
-    /* const fs = require('fs');  -- Commented out since this isn't valid to be run in browser
+    /* const fs = require('fs'); 
 
     let currentBugID;
     fs.promises.readFile('../../tracking/lastID.json', 'utf8')
@@ -41,7 +41,7 @@ function getNextBugID(interaction) {
 
     return currentBugID;
     */
-    return 65; //temporary
+    return 65; //temporary, cant be run in browser
 }
 
 function formatBugID(bugID, interaction) {
@@ -101,16 +101,17 @@ function addBugToExcel(interaction, bugID, viewBugID) {
 }
 
 function renameThread(interaction, viewBugID) {
-    /*const channelID = interaction.channelId;  //gets thread name vvvv
-    const thread = client.channels.cache.get(channelID);
-    let threadName = thread.name;
-    thread.name = '[' + viewBugID + '] ' + threadName; //updates name */
+    const forumPost = interaction.channel;
+    const forumPostName = forumPost.name;
+    const newThreadName = "[vCGP-B" + viewBugID + "] " + forumPostName; 
 
-    return "test";
+    const guildForumThreadManager = new GuildForumThreadManager(forumPost);
+    const forumPostObj = guildForumThreadManager.fetch(forumPost);
+    forumPostObj.edit({ name: `${newThreadName}`});
 }
 
 async function reply(interaction, viewBugID, client) { //adds message about feature now being tracked
-    const bugTitle = renameThread();
+    const bugTitle = renameThread(interaction, viewBugID);
     const bugDescription = interaction.options.getString('description');
     const attatchmentsNumber = 0;
     const bugCreationDate = interaction.options.getString('date');
