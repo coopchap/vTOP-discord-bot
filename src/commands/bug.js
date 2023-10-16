@@ -114,7 +114,7 @@ function renameThread(interaction, newThreadName) {
     forumPost.setName(newThreadName);
 }
 
-async function reply(interaction, viewBugID, bugTitle) { //adds message about feature now being tracked
+function reply(interaction, viewBugID) { //adds message about feature now being tracked
     const reporter = interaction.options.getUser('reporter'); //get user selected when cmommand sent
-    await interaction.reply(`${reporter}, your bug report is now being tracked! A ticket is has been filed. You will be notified in this thread if the issue is resolved.\nYour ticket number is: **${viewBugID}**`);
+    interaction.reply(`${reporter}, your bug report is now being tracked! A ticket is has been filed. You will be notified in this thread if the issue is resolved.\nYour ticket number is: **${viewBugID}**`);
 }
