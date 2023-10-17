@@ -5,10 +5,10 @@ export async function approveRequestReport(interaction) {
             renameThread(interaction);
             // updateStatusInExcel();
         } else {
-            throw new Error('Post is not a feature or improvement request');
+            interaction.reply({content: 'Error: I was not able to validate whether this post is being tracked or not.', ephemeral: true});
+            throw new Error('Not able to verify whether post is tracked or not');
         }
     } catch (error) {
-        interaction.reply({content: `${error}. You must track the request first using /feature or /improvement`, ephemeral: true});
         console.error(error);
     }
 }
