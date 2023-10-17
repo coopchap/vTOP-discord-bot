@@ -16,7 +16,7 @@ const client = new Client({
 import { addTrackedBug } from './src/commands/bug.js';
 // import { addTrackedImprovement } from './src/commands/improvement.js';
 import { approveRequestReport } from './src/commands/approve.js';
-//import { declinedRequestReport } from './src/commands/declined.js';
+import { declineRequestReport } from './src/commands/decline.js';
 //import { completedRequestReport } from './src/commands/completed.js';
 
 
@@ -124,11 +124,11 @@ client.on('interactionCreate', (interaction) => {
     }
 
     if (interaction.commandName === 'decline' && member.roles.cache.some(role => role.name === 'Admin')) {
-        declinedRequestReport(interaction, client);
+        declineRequestReport(interaction);
     }
 
     if (interaction.commandName === 'approve' && member.roles.cache.some(role => role.name === 'Admin')) {
-        approveRequestReport(interaction, client);
+        approveRequestReport(interaction);
     }
 
     if (interaction.commandName === 'verified' && member.roles.cache.some(role => role.name === 'Developer')) {
