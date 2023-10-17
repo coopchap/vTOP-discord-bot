@@ -1,14 +1,15 @@
-export async function approveRequestReport(interaction) {
+export async function declineRequestReport(interaction) {
     try {
         if (verifyRequeseted(interaction)) {
             await reply(interaction);
+            await closeThread(interaction);
             renameThread(interaction);
             // updateStatusInExcel();
         } else {
-            throw new Error('Post is not a feature or improvement request');
+            interaction.reply({content: 'Error: I was not able to validate whether this post is being tracked or not.', ephemeral: true});
+            throw new Error('Not able to verify whether post is tracked or not');
         }
     } catch (error) {
-        interaction.reply({content: `${error}. You must track the request first using /feature or /improvement`, ephemeral: true});
         console.error(error);
     }
 }
@@ -20,14 +21,14 @@ function verifyRequeseted(interaction) {
     if (titlePrefix === '[vCGP-F' || titlePrefix === '[vCGP-I') {
         return true;
     } else {
-        return false
+        return false;
     }
 }
 
 function renameThread(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
-    const newPostName = "✅ " + forumPostName;
+    const newPostName = "❌ " + forumPostName;
     forumPost.setName(newPostName);
 }
 
@@ -42,10 +43,14 @@ function reply(interaction) {
     } else if (titlePrefix === "[vCGP-I") {
         type = 'improvement ';
     }
-    interaction.reply(`Congratulations, ${requester}, vCGP admins have decided to approve your ${type}request. I'll update you in this thread when development begins.`);
+    interaction.reply(`${requester}, I am sorry to report that vCGP admins have decided to not continue with your ${type}request.\nI am now going to close this thread.`);
+}
+
+function closeThread(interaction) {
+    const forumPost = interaction.channel;
+    forumPost.setLocked(true);
 }
 
 function updateStatusInExcel() {
     // needs code
 }
-
