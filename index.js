@@ -17,6 +17,7 @@ import { addTrackedBug } from './src/commands/bug.js';
 // import { addTrackedImprovement } from './src/commands/improvement.js';
 import { approveRequestReport } from './src/commands/approve.js';
 import { declineRequestReport } from './src/commands/decline.js';
+import { indicateDevelopment } from './src/commands/in-development.js'
 //import { completedRequestReport } from './src/commands/completed.js';
 
 
@@ -140,7 +141,7 @@ client.on('interactionCreate', (interaction) => {
     }
 
     if (interaction.commandName === 'in-development' && member.roles.cache.some(role => role.name === 'Developer')) {
-        approveRequestReport(interaction, client);
+        indicateDevelopment(interaction);
     }
 
     if (interaction.commandName === 'completed' && member.roles.cache.some(role => role.name === 'Developer')) {
