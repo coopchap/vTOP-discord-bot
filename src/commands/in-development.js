@@ -7,7 +7,7 @@ export async function indicateDevelopment(interaction) {
         } else if (verifyReady(interaction) === "declined") {
             interaction.reply('Can\'t develop request that has been declined');
         } else {
-            interaction.reply({content: 'Error: I was not able to validate whether this post has been approved yet.', ephemeral: true});
+            interaction.reply({content: 'Error: I was not able to validate whether this post has been approved yet. Remember, use /fixing for bugs', ephemeral: true});
         }
     } catch (error) {
         console.error(error);
@@ -18,7 +18,7 @@ function verifyReady(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 9);
-    if (titlePrefix === '✅ [vCGP-F' || titlePrefix === '✅ [vCGP-I' || titlePrefix === '🪲 [vCGP-B') {
+    if (titlePrefix === '✅ [vCGP-F' || titlePrefix === '✅ [vCGP-I') {
         return "true";
     } else if (titlePrefix === '❌ [vCGP-F' || titlePrefix === '❌ [vCGP-I') {
         return "declined"
@@ -45,7 +45,7 @@ function reply(interaction) {
         type = 'feature request';
     } else if (titlePrefix === "✅ [vCGP-I") {
         type = 'improvement request';
-    } else if (titlePrefix === "🪲 [vCGP-B") {
+    } else if (titlePrefix === "🪳 [vCGP-") {
         type = 'bug report';
     }
     interaction.reply(`${reporter}, vCGP developers have begun development on your ${type}. You can expect to see it live in the next release.`);

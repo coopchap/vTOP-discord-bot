@@ -1,22 +1,23 @@
-export async function approveRequestReport(interaction) {
+export async function unverifiableReport(interaction) {
     try {
-        if (verifyRequeseted(interaction)) {
+        if (verifyReported(interaction)) {
             await reply(interaction);
+            await closeThread(interaction);
             renameThread(interaction);
             // updateStatusInExcel();
         } else {
-            interaction.reply({content: 'Error: I was not able to validate whether this post is being tracked or not.', ephemeral: true});
+            interaction.reply({content: 'Error: I was not able to validate whether this post is a tracked bug.', ephemeral: true});
         }
     } catch (error) {
         console.error(error);
     }
 }
 
-function verifyRequeseted(interaction) {
+function verifyReported(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 7);
-    if (titlePrefix === '[vCGP-F' || titlePrefix === '[vCGP-I') {
+    if (titlePrefix === '[vCGP-B') {
         return true;
     } else {
         return false
@@ -26,22 +27,18 @@ function verifyRequeseted(interaction) {
 function renameThread(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
-    const newPostName = "✅ " + forumPostName;
+    const newPostName = "➖ " + forumPostName;
     forumPost.setName(newPostName);
 }
 
 function reply(interaction) {
-    const requester = interaction.options.getUser('requester');
+    const reporter = interaction.options.getUser('reporter');
+    interaction.reply(`${reporter}, vCGP developers were not able to verify your bug report. This likely means the issue was not recreatable.\nI am now going to close this thread. If you have this issue again, create a new bug report.`);
+}
+
+function closeThread(interaction) {
     const forumPost = interaction.channel;
-    const forumPostName = forumPost.name;
-    const titlePrefix = forumPostName.slice(0, 7);
-    let type;
-    if (titlePrefix === "[vCGP-F") {
-        type = 'feature ';
-    } else if (titlePrefix === "[vCGP-I") {
-        type = 'improvement ';
-    }
-    interaction.reply(`Congratulations, ${requester}, vCGP admins have decided to approve your ${type}request. I'll update you in this thread when development begins.`);
+    forumPost.setLocked(true);
 }
 
 function updateStatusInExcel() {

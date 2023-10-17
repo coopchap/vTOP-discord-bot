@@ -17,7 +17,10 @@ import { addTrackedBug } from './src/commands/bug.js';
 // import { addTrackedImprovement } from './src/commands/improvement.js';
 import { approveRequestReport } from './src/commands/approve.js';
 import { declineRequestReport } from './src/commands/decline.js';
+import { verifiedReport } from './src/commands/verified.js';
+import { unverifiableReport } from './src/commands/unverifiable.js';
 import { indicateDevelopment } from './src/commands/in-development.js'
+import { fixingBug  } from "./src/commands/fixing.js";
 //import { completedRequestReport } from './src/commands/completed.js';
 
 
@@ -80,12 +83,21 @@ client.on(Events.ClientReady, (x) => {
 
     const inDevelopment = new SlashCommandBuilder()
         .setName('in-development')
-        .setDescription('This indicates that the request or report is in development')
+        .setDescription('This indicates that the request is in development')
         .addUserOption(option =>
             option
                 .setName('reporter')
                 .setDescription('who originally submitted the request or report')
                 .setRequired(true));
+
+    const fixing = new SlashCommandBuilder()
+        .setName('fixing')
+        .setDescription('This indicates that the report is being fixed')
+        .addUserOption(option =>
+            option
+            .setName('reporter')
+            .setDescription('Who originally submitted the report')
+            .setRequired(true));
 
 
     const completed = new SlashCommandBuilder()
@@ -103,6 +115,7 @@ client.on(Events.ClientReady, (x) => {
     client.application.commands.create(verified);
     client.application.commands.create(unverifiable);
     client.application.commands.create(inDevelopment);
+    client.application.commands.create(fixing);
     client.application.commands.create(completed);
 
 });
@@ -133,15 +146,19 @@ client.on('interactionCreate', (interaction) => {
     }
 
     if (interaction.commandName === 'verified' && member.roles.cache.some(role => role.name === 'Developer')) {
-        approveRequestReport(interaction, client);
+        verifiedReport(interaction, client);
     }
 
     if (interaction.commandName === 'unverifiable' && member.roles.cache.some(role => role.name === 'Admin')) {
-        approveRequestReport(interaction, client);
+        unverifiableReport(interaction, client);
     }
 
     if (interaction.commandName === 'in-development' && member.roles.cache.some(role => role.name === 'Developer')) {
         indicateDevelopment(interaction);
+    }
+
+    if (interaction.commandName === 'fixing' && member.roles.cache.some(role => role.name === 'Developer')) {
+        fixingBug(interaction);
     }
 
     if (interaction.commandName === 'completed' && member.roles.cache.some(role => role.name === 'Developer')) {
