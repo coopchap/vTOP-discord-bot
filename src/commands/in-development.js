@@ -1,48 +1,56 @@
-export async function approveRequestReport(interaction) {
+export async function indicateDevelopment(interaction) {
     try {
-        if (verifyRequeseted(interaction)) {
+        if (verifyReady(interaction) === "true") {
             await reply(interaction);
             renameThread(interaction);
             // updateStatusInExcel();
+        } else if (verifyReady(interaction) === "declined") {
+            interaction.reply('Can\'t develop request that has been declined');
+            throw new Error('Can\'t develop request that has been declined');
         } else {
-            throw new Error('Post is not a feature or improvement request');
+            interaction.reply({content: 'Error: I was not able to validate whether this post has been approved yet.', ephemeral: true});
+            throw new Error('Not able to verify whether has been approved yet');
         }
     } catch (error) {
-        interaction.reply({content: `${error}. You must track the request first using /feature or /improvement`, ephemeral: true});
         console.error(error);
     }
 }
 
-function verifyRequeseted(interaction) {
+function verifyReady(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
-    const titlePrefix = forumPostName.slice(0, 7);
-    if (titlePrefix === '[vCGP-F' || titlePrefix === '[vCGP-I') {
-        return true;
+    const titlePrefix = forumPostName.slice(0, 9);
+    if (titlePrefix === '✅ [vCGP-F' || titlePrefix === '✅ [vCGP-I' || titlePrefix === '🪲 [vCGP-B') {
+        return "true";
+    } else if (titlePrefix === '❌ [vCGP-F' || titlePrefix === '❌ [vCGP-I') {
+        return "declined"
     } else {
-        return false
+        return false;
     }
 }
 
 function renameThread(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
-    const newPostName = "✅ " + forumPostName;
+    const truePostName = forumPostName.slice(2)
+    const newPostName = "🛠️ " + truePostName;
     forumPost.setName(newPostName);
 }
 
 function reply(interaction) {
-    const requester = interaction.options.getUser('requester');
+    const reporter = interaction.options.getUser('reporter');
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
-    const titlePrefix = forumPostName.slice(0, 7);
+    const titlePrefix = forumPostName.slice(0, 9);
     let type;
-    if (titlePrefix === "[vCGP-F") {
-        type = 'feature ';
-    } else if (titlePrefix === "[vCGP-I") {
-        type = 'improvement ';
+    if (titlePrefix === "✅ [vCGP-F") {
+        type = 'feature request';
+    } else if (titlePrefix === "✅ [vCGP-I") {
+        type = 'improvement request';
+    } else if (titlePrefix === "🪲 [vCGP-B") {
+        type = 'bug report';
     }
-    interaction.reply(`Congratulations, ${requester}, vCGP admins have decided to approve your ${type}request. I'll update you in this thread when development begins.`);
+    interaction.reply(`${reporter}, vCGP developers have begun development on your ${type}. You can expect to see it live in the next release.`);
 }
 
 function updateStatusInExcel() {
