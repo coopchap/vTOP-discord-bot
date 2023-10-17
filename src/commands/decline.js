@@ -7,7 +7,6 @@ export async function declineRequestReport(interaction) {
             // updateStatusInExcel();
         } else {
             interaction.reply({content: 'Error: I was not able to validate whether this post is being tracked or not.', ephemeral: true});
-            throw new Error('Not able to verify whether post is tracked or not');
         }
     } catch (error) {
         console.error(error);

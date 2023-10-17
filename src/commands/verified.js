@@ -1,23 +1,22 @@
-export async function approveRequestReport(interaction) {
+export async function verifiedReport(interaction) {
     try {
-        if (verifyRequeseted(interaction)) {
+        if (verifyReported(interaction)) {
             await reply(interaction);
             renameThread(interaction);
             // updateStatusInExcel();
         } else {
-            throw new Error('Post is not a feature or improvement request');
+            interaction.reply({content: 'Error: I was not able to validate whether this post is a tracked bug.', ephemeral: true});
         }
     } catch (error) {
-        interaction.reply({content: `${error}. You must track the request first using /feature or /improvement`, ephemeral: true});
         console.error(error);
     }
 }
 
-function verifyRequeseted(interaction) {
+function verifyReported(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 7);
-    if (titlePrefix === '[vCGP-F' || titlePrefix === '[vCGP-I') {
+    if (titlePrefix === '[vCGP-B') {
         return true;
     } else {
         return false

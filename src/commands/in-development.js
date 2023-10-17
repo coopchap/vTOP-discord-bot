@@ -6,10 +6,8 @@ export async function indicateDevelopment(interaction) {
             // updateStatusInExcel();
         } else if (verifyReady(interaction) === "declined") {
             interaction.reply('Can\'t develop request that has been declined');
-            throw new Error('Can\'t develop request that has been declined');
         } else {
             interaction.reply({content: 'Error: I was not able to validate whether this post has been approved yet.', ephemeral: true});
-            throw new Error('Not able to verify whether has been approved yet');
         }
     } catch (error) {
         console.error(error);
