@@ -48,10 +48,61 @@ client.on(Events.ClientReady, (x) => {
             option
                 .setName('requester')
                 .setDescription('Who originally submitted the request')
-                .setRequired(true))
+                .setRequired(true));
+
+    const decline = new SlashCommandBuilder()
+        .setName('decline')
+        .setDescription('This declines a feature or improvement request (Use /unverifiable for bug reports')
+        .addUserOption(option =>
+            option
+                .setName('requester')
+                .setDescription('Who originally submitted the request')
+                .setRequired(true));
+
+    const verified = new SlashCommandBuilder()
+        .setName('verified')
+        .setDescription('This indicates that the bug report has been verfied')
+        .addUserOption(option =>
+            option
+                .setName('reporter')
+                .setDescription('Who originally submitted the report')
+                .setRequired(true));
+
+    const unverifiable = new SlashCommandBuilder()
+        .setName('unverifiable')
+        .setDescription('This indicates that the bug report was not able to be verfied')
+        .addUserOption(option =>
+            option
+                .setName('reporter')
+                .setDescription('Who originallt submitted the report')
+                .setRequired(true));
+
+    const inDevelopment = new SlashCommandBuilder()
+        .setName('in-development')
+        .setDescription('This indicates that the request or report is in development')
+        .addUserOption(option =>
+            option
+                .setName('reporter')
+                .setDescription('who originally submitted the request or report')
+                .setRequired(true));
+
+
+    const completed = new SlashCommandBuilder()
+        .setName('completed')
+        .setDescription('This announces the completion of a featrue or improvement request or a bug report')
+        .addUserOption(option =>
+            option
+                .setName('reporter')
+                .setDescription('Who originally submitted the request or report'));
+
    
     client.application.commands.create(bug);
     client.application.commands.create(approve);
+    client.application.commands.create(decline);
+    client.application.commands.create(verified);
+    client.application.commands.create(unverifiable);
+    client.application.commands.create(inDevelopment);
+    client.application.commands.create(completed);
 
 });
 
@@ -72,11 +123,23 @@ client.on('interactionCreate', (interaction) => {
         addTrackedImprovement(interaction, client);
     }
 
-    if (interaction.commandName === 'declined' && member.roles.cache.some(role => role.name === 'Admin')) {
+    if (interaction.commandName === 'decline' && member.roles.cache.some(role => role.name === 'Admin')) {
         declinedRequestReport(interaction, client);
     }
 
     if (interaction.commandName === 'approve' && member.roles.cache.some(role => role.name === 'Admin')) {
+        approveRequestReport(interaction, client);
+    }
+
+    if (interaction.commandName === 'verified' && member.roles.cache.some(role => role.name === 'Developer')) {
+        approveRequestReport(interaction, client);
+    }
+
+    if (interaction.commandName === 'unverifiable' && member.roles.cache.some(role => role.name === 'Admin')) {
+        approveRequestReport(interaction, client);
+    }
+
+    if (interaction.commandName === 'in-development' && member.roles.cache.some(role => role.name === 'Developer')) {
         approveRequestReport(interaction, client);
     }
 
