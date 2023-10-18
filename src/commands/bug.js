@@ -1,5 +1,5 @@
 import {
-    GuildForumThreadManager
+    GuildForumThreadManager 
 } from 'discord.js';
 
 export async function addTrackedBug(interaction) {
@@ -66,7 +66,7 @@ function formatBugID(bugID) {
             default:
                 throw new Error('\'bugID\' was too long or not valid');
         }
-    const viewBugID = 'vtop-B' + threeDigitBugID;
+    const viewBugID = 'vTOP-B' + threeDigitBugID;
     return [viewBugID, threeDigitBugID];
 
     } catch (error) {
@@ -124,7 +124,7 @@ async function reply(interaction, viewBugID, bugTitle, attachementsNumber) { //a
     const bugCreationDate = `<t:${correctedStamp}:d>`;
 
 
-    interaction.user.send(`You have created a new bug ticket in the vtop server.\nID: \`${viewBugID}\`.\nTitle: \`${bugTitle}\`.\nDescription: \`${bugDescription}\`.\nAttatchments: \`${attachementsNumber}\`.\nCreated: ${bugCreationDate}\n\nIf this was a mistake, contact an admin`);
+    interaction.user.send(`You have created a new bug ticket in the vTOP server.\nID: \`${viewBugID}\`.\nTitle: \`${bugTitle}\`.\nDescription: \`${bugDescription}\`.\nAttatchments: \`${attachementsNumber}\`.\nCreated: ${bugCreationDate}\n\nIf this was a mistake, contact an admin`);
 }
 
 function getNumberAttachments(interaction) {

@@ -2,7 +2,7 @@ import {
     ChannelManager, 
     channelMention
 } from "discord.js";
-
+ 
 export async function verifiedReport(interaction) {
     try {
         if (verifyReported(interaction)) {
@@ -22,7 +22,7 @@ function verifyReported(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 7);
-    if (titlePrefix === '[vtop-B') {
+    if (titlePrefix === '[vTOP-B') {
         return true;
     } else {
         return false
@@ -32,13 +32,13 @@ function verifyReported(interaction) {
 function renameThread(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
-    const newPostName = "🪳 " + forumPostName;
+    const newPostName = "🕷 " + forumPostName;
     forumPost.setName(newPostName);
 }
 
 function reply(interaction) {
     const reporter = interaction.options.getUser('reporter');
-    interaction.reply(`${reporter}, vtop developers have verified your bug report. I'll update you in this thread when development begins.`);
+    interaction.reply(`${reporter}, vTOP developers have verified your bug report. I'll update you in this thread when development begins.`);
 }
 
 async function addToAssignmentForum(interaction) {
@@ -50,7 +50,7 @@ async function addToAssignmentForum(interaction) {
 
     assignmentsForum.threads.create({
         name: requestTitle,
-        message: {content: `${requestPost} A new bug report has been made. Stay tuned, vtop admins will assign a devloper to this report soon.`},
+        message: {content: `${requestPost} A new bug report has been made. Stay tuned, vTOP admins will assign a devloper to this report soon.`},
     })
 }
 

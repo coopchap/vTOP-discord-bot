@@ -24,9 +24,9 @@ function verifyRequeseted(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 7);
-    if (titlePrefix === '[vtop-F' || titlePrefix === '[vtop-I') {
+    if (titlePrefix === '[vTOP-F' || titlePrefix === '[vTOP-I') {
         return 'true';
-    } else if (titlePrefix === '[vtop-B') {
+    } else if (titlePrefix === '[vTOP-B') {
         return 'bug';
     }
 }
@@ -44,12 +44,12 @@ function reply(interaction) {
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 7);
     let type;
-    if (titlePrefix === "[vtop-F") {
+    if (titlePrefix === "[vTOP-F") {
         type = 'feature ';
-    } else if (titlePrefix === "[vtop-I") {
+    } else if (titlePrefix === "[vTOP-I") {
         type = 'improvement ';
     }
-    interaction.reply(`Congratulations, ${requester}, vtop admins have decided to approve your ${type}request. I'll update you in this thread when development begins.`);
+    interaction.reply(`Congratulations, ${requester}, vTOP admins have decided to approve your ${type}request. I'll update you in this thread when development begins.`);
 }
 
 async function addToAssignmentForum(interaction) {
@@ -61,15 +61,15 @@ async function addToAssignmentForum(interaction) {
 
     const titlePrefix = interaction.channel.name.slice(0, 7);
     let type;
-    if (titlePrefix === "[vtop-F") {
+    if (titlePrefix === "[vTOP-F") {
         type = 'feature ';
-    } else if (titlePrefix === "[vtop-I") {
+    } else if (titlePrefix === "[vTOP-I") {
         type = 'improvement ';
     }
 
     assignmentsForum.threads.create({
         name: requestTitle,
-        message: {content: `${requestPost} A new ${type}request has been made. Stay tuned, vtop admins will assign a devloper to this request soon.`},
+        message: {content: `${requestPost} A new ${type}request has been made. Stay tuned, vTOP admins will assign a devloper to this request soon.`},
     })
 }
 

@@ -1,7 +1,7 @@
 export async function indicateDevelopment(interaction) {
     try {
         if (verifyReady(interaction) === "true") {
-            await reply(interaction);
+            await reply(interaction); 
             renameThread(interaction);
             // updateStatusInExcel();
         } else if (verifyReady(interaction) === "declined") {
@@ -18,9 +18,9 @@ function verifyReady(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 9);
-    if (titlePrefix === '✅ [vtop-F' || titlePrefix === '✅ [vtop-I') {
+    if (titlePrefix === '✅ [vTOP-F' || titlePrefix === '✅ [vTOP-I') {
         return "true";
-    } else if (titlePrefix === '❌ [vtop-F' || titlePrefix === '❌ [vtop-I') {
+    } else if (titlePrefix === '❌ [vTOP-F' || titlePrefix === '❌ [vTOP-I') {
         return "declined"
     } else {
         return false;
@@ -41,14 +41,14 @@ function reply(interaction) {
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 9);
     let type;
-    if (titlePrefix === "✅ [vtop-F") {
+    if (titlePrefix === "✅ [vTOP-F") {
         type = 'feature request';
-    } else if (titlePrefix === "✅ [vtop-I") {
+    } else if (titlePrefix === "✅ [vTOP-I") {
         type = 'improvement request';
-    } else if (titlePrefix === "🪳 [vtop-") {
+    } else if (titlePrefix === "🕷 [vTOP-") {
         type = 'bug report';
     }
-    interaction.reply(`${reporter}, vtop developers have begun development on your ${type}. You can expect to see it live in the next release.`);
+    interaction.reply(`${reporter}, vTOP developers have begun development on your ${type}. You can expect to see it live in the next release.`);
 }
 
 function updateStatusInExcel() {

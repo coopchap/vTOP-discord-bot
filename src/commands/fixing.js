@@ -1,4 +1,4 @@
-export function fixingBug(interaction) {
+export function fixingBug(interaction) { 
     try {
         if (verifyReady(interaction)) {
             reply(interaction);
@@ -17,9 +17,9 @@ function verifyReady(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 9);
-    if (titlePrefix === '🪳 [vtop-') {
+    if (titlePrefix === '🪳 [vTOP-') {
         return true;
-    } else if (titlePrefix === '➖ [vtop-B') {
+    } else if (titlePrefix === '➖ [vTOP-B') {
         return 'unver';
     } else {
         return false;
@@ -37,7 +37,7 @@ function renameThread(interaction) {
 
 async function reply(interaction) {
     const reporter = interaction.options.getUser('reporter');
-    await interaction.reply(`${reporter}, vtop developers have begun developing a fix for your bug report. You can expect to see it live in the next release.`);
+    await interaction.reply(`${reporter}, vTOP developers have begun developing a fix for your bug report. You can expect to see it live in the next release.`);
     const newName = await renameThread(interaction);
     interaction.followUp({content: `You may need to manually rename this post to "${newName}".`, ephemeral: true})
 }

@@ -1,6 +1,6 @@
 export async function declineRequestReport(interaction) {
     try {
-        if (verifyRequeseted(interaction) === 'true') {
+        if (verifyRequeseted(interaction) === 'true') { 
             await reply(interaction);
             await closeThread(interaction);
             renameThread(interaction);
@@ -19,9 +19,9 @@ function verifyRequeseted(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 7);
-    if (titlePrefix === '[vtop-F' || titlePrefix === '[vtop-I') {
+    if (titlePrefix === '[vTOP-F' || titlePrefix === '[vTOP-I') {
         return 'true';
-    } else if (titlePrefix === '[vtop-B') {
+    } else if (titlePrefix === '[vTOP-B') {
         return 'bug';
     }
 }
@@ -39,12 +39,12 @@ function reply(interaction) {
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 7);
     let type;
-    if (titlePrefix === "[vtop-F") {
+    if (titlePrefix === "[vTOP-F") {
         type = 'feature ';
-    } else if (titlePrefix === "[vtop-I") {
+    } else if (titlePrefix === "[vTOP-I") {
         type = 'improvement ';
     }
-    interaction.reply(`${requester}, I am sorry to report that vtop admins have decided to not continue with your ${type}request.\nI am now going to close this thread.`);
+    interaction.reply(`${requester}, I am sorry to report that vTOP admins have decided to not continue with your ${type}request.\nI am now going to close this thread.`);
 }
 
 function closeThread(interaction) {
