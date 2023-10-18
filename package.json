@@ -1,7 +1,7 @@
 {
   "name": "discordbot",
   "version": "0.0.0",
-  "description": "Discord bot for the vCGP server. The main purpose is to maintain feature and bug tracking",
+  "description": "Discord bot for the vTOP server. The main purpose is to maintain feature and bug tracking",
   "main": "index.js",
   "type": "module",
   "scripts": {
