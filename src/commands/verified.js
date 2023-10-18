@@ -22,7 +22,7 @@ function verifyReported(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 7);
-    if (titlePrefix === '[vCGP-B') {
+    if (titlePrefix === '[vtop-B') {
         return true;
     } else {
         return false
@@ -38,7 +38,7 @@ function renameThread(interaction) {
 
 function reply(interaction) {
     const reporter = interaction.options.getUser('reporter');
-    interaction.reply(`${reporter}, vCGP developers have verified your bug report. I'll update you in this thread when development begins.`);
+    interaction.reply(`${reporter}, vtop developers have verified your bug report. I'll update you in this thread when development begins.`);
 }
 
 async function addToAssignmentForum(interaction) {
@@ -50,7 +50,7 @@ async function addToAssignmentForum(interaction) {
 
     assignmentsForum.threads.create({
         name: requestTitle,
-        message: {content: `${requestPost} A new bug report has been made. Stay tuned, vCGP admins will assign a devloper to this report soon.`},
+        message: {content: `${requestPost} A new bug report has been made. Stay tuned, vtop admins will assign a devloper to this report soon.`},
     })
 }
 

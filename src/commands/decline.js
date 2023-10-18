@@ -19,9 +19,9 @@ function verifyRequeseted(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 7);
-    if (titlePrefix === '[vCGP-F' || titlePrefix === '[vCGP-I') {
+    if (titlePrefix === '[vtop-F' || titlePrefix === '[vtop-I') {
         return 'true';
-    } else if (titlePrefix === '[vCGP-B') {
+    } else if (titlePrefix === '[vtop-B') {
         return 'bug';
     }
 }
@@ -39,12 +39,12 @@ function reply(interaction) {
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 7);
     let type;
-    if (titlePrefix === "[vCGP-F") {
+    if (titlePrefix === "[vtop-F") {
         type = 'feature ';
-    } else if (titlePrefix === "[vCGP-I") {
+    } else if (titlePrefix === "[vtop-I") {
         type = 'improvement ';
     }
-    interaction.reply(`${requester}, I am sorry to report that vCGP admins have decided to not continue with your ${type}request.\nI am now going to close this thread.`);
+    interaction.reply(`${requester}, I am sorry to report that vtop admins have decided to not continue with your ${type}request.\nI am now going to close this thread.`);
 }
 
 function closeThread(interaction) {

@@ -16,7 +16,7 @@ function verifyRequeseted(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 10);
-    if (titlePrefix === '🛠 [vCGP-F' || titlePrefix === '🛠️ [vCGP-I' || titlePrefix === '🛠 [vCGP-B') {
+    if (titlePrefix === '🛠 [vtop-F' || titlePrefix === '🛠️ [vtop-I' || titlePrefix === '🛠 [vtop-B') {
         return true;
     } else {
         return false;
@@ -32,12 +32,12 @@ function renameThread(interaction) {
 function reply(interaction) {
     const requester = interaction.options.getUser('requester');
     const titlePrefix = interaction.channel.name.slice(0, 10);
-    if (titlePrefix === "🛠 [vCGP-F") {
-        interaction.reply(`${requester}, vCGP developeres have completed implementing your feature request! You can expect to see it in the next release.`);
-    } else if (titlePrefix === "🛠 [vCGP-I") {
-        interaction.reply(`${requester}, vCGP developeres have completed implementing your improvement request! You can expect to see it in the next release.`);
-    } else if (titlePrefix === '🛠 [vCGP-B') {
-        interaction.reply(`${requester}, vCGP developeres have completed fixing your bug report! You can expect to see it in the next release.`);
+    if (titlePrefix === "🛠 [vtop-F") {
+        interaction.reply(`${requester}, vtop developeres have completed implementing your feature request! You can expect to see it in the next release.`);
+    } else if (titlePrefix === "🛠 [vtop-I") {
+        interaction.reply(`${requester}, vtop developeres have completed implementing your improvement request! You can expect to see it in the next release.`);
+    } else if (titlePrefix === '🛠 [vtop-B') {
+        interaction.reply(`${requester}, vtop developeres have completed fixing your bug report! You can expect to see it in the next release.`);
     }
 }
 

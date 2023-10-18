@@ -18,9 +18,9 @@ function verifyReady(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 9);
-    if (titlePrefix === '✅ [vCGP-F' || titlePrefix === '✅ [vCGP-I') {
+    if (titlePrefix === '✅ [vtop-F' || titlePrefix === '✅ [vtop-I') {
         return "true";
-    } else if (titlePrefix === '❌ [vCGP-F' || titlePrefix === '❌ [vCGP-I') {
+    } else if (titlePrefix === '❌ [vtop-F' || titlePrefix === '❌ [vtop-I') {
         return "declined"
     } else {
         return false;
@@ -41,14 +41,14 @@ function reply(interaction) {
     const forumPostName = forumPost.name;
     const titlePrefix = forumPostName.slice(0, 9);
     let type;
-    if (titlePrefix === "✅ [vCGP-F") {
+    if (titlePrefix === "✅ [vtop-F") {
         type = 'feature request';
-    } else if (titlePrefix === "✅ [vCGP-I") {
+    } else if (titlePrefix === "✅ [vtop-I") {
         type = 'improvement request';
-    } else if (titlePrefix === "🪳 [vCGP-") {
+    } else if (titlePrefix === "🪳 [vtop-") {
         type = 'bug report';
     }
-    interaction.reply(`${reporter}, vCGP developers have begun development on your ${type}. You can expect to see it live in the next release.`);
+    interaction.reply(`${reporter}, vtop developers have begun development on your ${type}. You can expect to see it live in the next release.`);
 }
 
 function updateStatusInExcel() {
