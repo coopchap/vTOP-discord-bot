@@ -1,49 +1,28 @@
-import {
-    GuildForumThreadManager 
-} from 'discord.js';
+import { GuildForumThreadManager } from 'discord.js';
+import * as XLSX from 'xlsx/xlsx.mjs';
+import { getLastID, writeNewID } from "../common.js";
 
 export async function addTrackedBug(interaction) {
-    try {
-        const bugID = await getNextBugID();
-        const viewBugID = formatBugID(bugID)[0];
-        const excelBugID = formatBugID(bugID)[1];
+    const bugID = await getNextBugID();
+    const viewBugID = formatBugID(bugID)[0];
+    const excelBugID = formatBugID(bugID)[1];
 
-        await addBugToExcel(interaction, bugID, excelBugID);
-        const threadNames = await getNewThreadName(interaction, viewBugID);
-        const newThreadName = threadNames[0];
-        const bugTitle = threadNames[1];
-        const attachementsNumber = await getNumberAttachments(interaction);
-        await reply(interaction, viewBugID, bugTitle, attachementsNumber);
-        renameThread(interaction, newThreadName);
-        createNewForumPost(interaction);
-    } catch (error) {
-        console.error('Error:', error);
-    }
+    // addBugToExcel(interaction, bugID, excelBugID);
+    const threadNames = getNewThreadName(interaction, viewBugID);
+    const newThreadName = threadNames[0];
+    const bugTitle = threadNames[1];
+    const attachementsNumber =  getNumberAttachments(interaction);
+    reply(interaction, viewBugID, bugTitle, attachementsNumber);
+    renameThread(interaction, newThreadName);
+    createNewForumPost(interaction);
 }
 
-function getNextBugID() {
+async function getNextBugID() {
+	const bugID = await getLastID('bug');
+	const newBugID = bugID + 1;
+	writeNewID('bug', newBugID);
 
-    /* const fs = require('fs'); 
-
-    let currentBugID;
-    fs.promises.readFile('../../tracking/lastID.json', 'utf8')
-      .then(data => {
-        const jsonData = JSON.parse(data);
-        const lastBugID = jsonData.bugID;
-        currentBugID = lastBugID + 1;
-      })
-      .catch(error => {
-        console.error('Error: unable to read lastID.json', error);
-      });
-
-    if (currentBugID >= 900) { //warns if close to 1000 (4 digit ids not supported)
-        interaction.reply({ content: 'Warning: \'latestBugID\' is approaching 1000, consider updating code to accomadate for IDs greater than 1000', ephemeral: true });
-        console.warn('Warning: \'latestBugID\' is approaching 1000, consider updating code to accomadate for IDs greater than 1000');
-    } 
-
-    return currentBugID;
-    */
-    return 68; //temporary, cant be run in browser
+	return bugID;
 }
 
 function formatBugID(bugID) {
@@ -76,9 +55,9 @@ function formatBugID(bugID) {
 
 
 function addBugToExcel(interaction, bugID, viewBugID) {
-    /* var XLSX = require("xlsx");   //load .xlsx sheet vvvv
-    const workbook = XLSX.readFile('../../tracking/book.xlsx')
-    let worksheet = workbook.Sheets['Sheet1'];  
+
+    const workbook = XLSX.readFile('vTOP-Tracking-Document.xlsx');
+    let worksheet = workbook.Sheets['Bugs'];  
     
     const channelId = interaction.channelId; // prepares data for cells vvvv
     const thread = client.channels.cache.get(channelId);
@@ -99,7 +78,7 @@ function addBugToExcel(interaction, bugID, viewBugID) {
     updateCell(14, bugCreationDate);
     updateCell(15, "Reviewing");
     updateCell(16, "-");
-    updateCell(17, "-"); */
+    updateCell(17, "-");    
 }
 
 function getNewThreadName(interaction, viewBugID) {
@@ -139,7 +118,7 @@ function getNumberAttachments(interaction) {
             return 0;
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return "error";
     }
 }

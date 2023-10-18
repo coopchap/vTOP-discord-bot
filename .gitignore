@@ -1,2 +1,3 @@
 # ignore the discord bot token file
 .env
+.DS_Store
