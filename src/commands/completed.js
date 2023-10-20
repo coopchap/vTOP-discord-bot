@@ -1,3 +1,5 @@
+import { fetchTitlePrefix } from "../common.js";
+
 export async function completed(interaction) {
     try {
         if (verifyRequeseted(interaction)) { 
@@ -12,10 +14,8 @@ export async function completed(interaction) {
     }
 }
 
-function verifyRequeseted(interaction) {
-    const forumPost = interaction.channel;
-    const forumPostName = forumPost.name;
-    const titlePrefix = forumPostName.slice(0, 10);
+async function verifyRequeseted(interaction) {
+    const titlePrefix = await fetchTitlePrefix(interaction, 10);
     if (titlePrefix === '🛠 [vTOP-F' || titlePrefix === '🛠️ [vTOP-I' || titlePrefix === '🛠 [vTOP-B') {
         return true;
     } else {

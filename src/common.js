@@ -1,6 +1,6 @@
 import * as fsPromises from 'fs/promises';
 
-const jsonFile = '/Users/CHAPPCOO000/Library/CloudStorage/OneDrive-HamiltonSoutheasternSchools/VS Code/vTOP/vTOP-discord-bot/tracking/nextID.json';
+const jsonFile = '/Users/CHAPPCOO000/Library/CloudStorage/OneDrive-HamiltonSoutheasternSchools/VS-Code/vTOP/vTOP-discord-bot/tracking/nextID.json';
 
 export async function getLastID(type) {
     const data = await fsPromises.readFile(jsonFile, 'utf-8');
@@ -31,4 +31,15 @@ export async function writeNewID(type, newID) {
     }
 
     await fsPromises.writeFile(jsonFile, JSON.stringify(json, null, 2));
+}
+
+export async function fetchTitlePrefix(interaction, length) {
+    console.log('here');
+    const forumPost = interaction.channel;
+    console.log('post: ' + forumPost);
+    const forumPostName = forumPost.name;
+    console.log('name: ' + forumPostName)
+    const titlePrefix = forumPostName.slice(0, length);
+    console.log('prefix: ' + titlePrefix);
+    return titlePrefix
 }

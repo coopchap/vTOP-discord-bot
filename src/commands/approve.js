@@ -3,6 +3,8 @@ import {
     channelMention
 } from "discord.js";
 
+import { fetchTitlePrefix } from "../common.js";
+
 export async function approveRequestReport(interaction) {
     try {
         if (verifyRequeseted(interaction) === 'true') {
@@ -21,9 +23,7 @@ export async function approveRequestReport(interaction) {
 }
 
 function verifyRequeseted(interaction) {
-    const forumPost = interaction.channel;
-    const forumPostName = forumPost.name;
-    const titlePrefix = forumPostName.slice(0, 7);
+    const titlePrefix = fetchTitlePrefix(interaction, 7);
     if (titlePrefix === '[vTOP-F' || titlePrefix === '[vTOP-I') {
         return 'true';
     } else if (titlePrefix === '[vTOP-B') {

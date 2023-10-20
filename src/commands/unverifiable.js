@@ -1,3 +1,5 @@
+import { fetchTitlePrefix } from "../common.js";
+
 export async function unverifiableReport(interaction) {
     try {
         if (verifyReported(interaction)) { 
@@ -13,10 +15,8 @@ export async function unverifiableReport(interaction) {
     }
 }
 
-function verifyReported(interaction) {
-    const forumPost = interaction.channel;
-    const forumPostName = forumPost.name;
-    const titlePrefix = forumPostName.slice(0, 7);
+async function verifyReported(interaction) {
+    const titlePrefix = await fetchTitlePrefix(interaction, 7);
     if (titlePrefix === '[vTOP-B') {
         return true;
     } else {

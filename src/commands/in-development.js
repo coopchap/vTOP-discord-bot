@@ -1,3 +1,5 @@
+import { fetchTitlePrefix } from "../common.js";
+
 export async function indicateDevelopment(interaction) {
     try {
         if (verifyReady(interaction) === "true") {
@@ -15,9 +17,7 @@ export async function indicateDevelopment(interaction) {
 }
 
 function verifyReady(interaction) {
-    const forumPost = interaction.channel;
-    const forumPostName = forumPost.name;
-    const titlePrefix = forumPostName.slice(0, 9);
+    const titlePrefix = fetchTitlePrefix(interaction, 9);
     if (titlePrefix === '✅ [vTOP-F' || titlePrefix === '✅ [vTOP-I') {
         return "true";
     } else if (titlePrefix === '❌ [vTOP-F' || titlePrefix === '❌ [vTOP-I') {

@@ -1,3 +1,5 @@
+import { fetchTitlePrefix } from "../common.js";
+
 export function fixingBug(interaction) { 
     try {
         if (verifyReady(interaction)) {
@@ -13,10 +15,8 @@ export function fixingBug(interaction) {
     }
 }
 
-function verifyReady(interaction) {
-    const forumPost = interaction.channel;
-    const forumPostName = forumPost.name;
-    const titlePrefix = forumPostName.slice(0, 9);
+async function verifyReady(interaction) {
+    const titlePrefix = await fetchTitlePrefix(interaction, 9);
     if (titlePrefix === '🪳 [vTOP-') {
         return true;
     } else if (titlePrefix === '➖ [vTOP-B') {
@@ -29,7 +29,7 @@ function verifyReady(interaction) {
 function renameThread(interaction) {
     const forumPost = interaction.channel;
     const forumPostName = forumPost.name;
-    const truePostName = forumPostName.slice(2)
+    const truePostName = forumPostName.slice(3)
     const newPostName = "🛠️ " + truePostName;
     forumPost.setName(newPostName);
     return newPostName;
